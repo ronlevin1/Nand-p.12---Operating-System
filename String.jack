@@ -13,50 +13,62 @@
  */
 class String { // TODO: test
     field Array str;
-    field int length;
+    field int len, maxLen;
 
-    /** constructs a new empty string with a maximum length of maxLength
-     *  and initial length of 0. */
-    constructor String new(int maxLength) {
-        let str = Array.new(maxLength);
-        let length = 0;
+    /** constructs a new empty string with a maximum len of maxlen
+     *  and initial len of 0. */
+    constructor String new(int maxlen) {
+        let str = Array.new(maxlen);
+        let len = 0;
+        let maxLen = maxlen;
         return this;
     }
 
     /** Disposes this string. */
     method void dispose() {
-        str.dispose();
-        let length = 0;
+        do str.dispose();
+        let len = 0;
         return;
     }
 
     /** Returns the current length of this string. */
     method int length() {
-        return length;
+        return len;
     }
 
     /** Returns the character at the j-th location of this string. */
     method char charAt(int j) {
-        return str[j];
+        if ((j < maxLen) & (j > -1)) {
+            return str.peek(j);
+        }
+        return 0;
     }
 
     /** Sets the character at the j-th location of this string to c. */
     method void setCharAt(int j, char c) {
         //todo: maybe its required to convert c to int?
-        do str.poke(j, c);
+        if ((j < maxLen) & (j > -1)) {
+            do str.poke(j, c);
+        }
+        return;
     }
 
     /** Appends c to this string's end and returns this string. */
     method String appendChar(char c) {
-        do setCharAt(length, c);
-        do length = length + 1;
+        if (len < maxLen) {
+            do setCharAt(len, c);
+            let len = (len + 1);
+        }
         return this;
     }
 
     /** Erases the last character from this string. */
     method void eraseLastChar() {
-        do length = length - 1;
-        do setCharAt(length, 0);
+        if (len > 0){
+            let len = (len - 1);
+            do setCharAt(len, 0);
+        }
+        return;
     }
 
     /** Returns the integer value of this string, 
@@ -64,10 +76,18 @@ class String { // TODO: test
     method int intValue() {
         // Pseudocode:
         // 1. let val = 0
-        // 2. for (i = 0 .. str.length()) do
+        // 2. for (i = 0 .. str.len()) do
         // 3.   let d = integer value of str.charAt(i)
         // 4.   let val = (val*10) + d
         // 5. return val
+        var int val, i, d;
+        let i=0;
+        let val=0;
+        while(i<len){
+            let d = charAt(i);
+            let val = (val*10) + d;
+        }
+        return val;
     }
 
     /** Sets this string to hold a representation of the given value. */
@@ -79,6 +99,29 @@ class String { // TODO: test
         // 4.   return c (as a string)
         // 5. else
         // 6.   return int2String(val / 10).appendChar(c)
+        var int lastDigit, n, mod, valLen;
+        var char c;
+        //
+        let valLen = 0;
+        let len = 0; // erase the current string;
+        //
+        let n = val;
+        while(n > 0){
+            let valLen = (valLen + 1);
+            let n = n / 10;
+        }
+        // integer and modolu parts of val
+        let n = val/10;
+        let mod = val - (n*10);
+        while(valLen > 0){
+            let valLen = (valLen - 1);
+            let lastDigit = mod;
+            let c = lastDigit + 48; // +48?
+            do setCharAt(valLen, c);
+            let n = n / 10;
+            let mod = n - (n*10);
+        }
+        return;
     }
 
     /** Returns the new line character. */
