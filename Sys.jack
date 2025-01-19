@@ -15,6 +15,8 @@ class Sys {
         //    Some OS classes depend on others, so order is important here!
         // 2. do Main.main()
         // 3. do Sys.halt()
+
+        //TODO: re-order according to the actual dependencies
         do Math.init();
         do Keyboard.init();
         do Memory.init();
@@ -42,16 +44,20 @@ class Sys {
 
     /** Waits approximately duration milliseconds and returns.  */
     function void wait(int duration) {
-        var int milliseconds, temp;
-        let milliseconds = 1000; // TODO: change according to the system to match the real time.
+        var int milliseconds, temp, i, j;
+        let milliseconds = 60; // TODO: change according to the system to match the real time.
         /*
             * The following loop is a simple way to wait for a given duration.
             to replace 'miliseconds': run and test this function with duration=10*1000 and compare to a stopwatch for 10 seconds. adjust 'miliseconds' until a good match is found.
         */
-        for (var int i = 0; i < duration; i = i + 1) {
-            for (var int j = 0; j < milliseconds; j = j + 1) {
+        let i = 0;
+        while (i < duration) {
+            let j=0;
+            while(j < milliseconds) {
                 let temp = 0;
+                let j = j + 1;
             }
+            let i = i + 1;
         }
         return;
     }
@@ -63,7 +69,8 @@ class Sys {
         do Output.printInt(errorCode);
         do Output.printString(">");
         do Output.println();
-        do halt();
+        do Sys.halt();
         return;
     }
 }
+// /Users/ronlevin/Desktop/nand2tetris/tools/JackCompiler.sh
