@@ -73,6 +73,8 @@
         if (len > 0){
             let len = (len - 1);
             do setCharAt(len, 0);
+            // todo: ?
+            // do Output.backSpace();
         }
         return;
     }
