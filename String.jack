@@ -89,18 +89,24 @@
 
         // todo: fix and test
         var int val, i, d, sign;
+        var char c;
+        
         let i=0;
         let val=0;
         let sign = 0;
+
         if(charAt(0) = 45){ // = '-'; check for negative sign
             let sign = 1;
             let i = 1;
         }
-        while(i<len){
-            let d = charAt(i); // todo: -48?
-            if((d < 48) | (d > 57)){
+
+        while(i<length()){
+            let c = charAt(i);
+            // check for non-digit character
+            if((c < 48) | (c > 57)){ 
                 return val;
             }
+            let d = charToDigit(c);
             let val = (val*10) + d;
             let i = (i + 1);
         }
@@ -114,6 +120,10 @@
         return d + 48;
     }
 
+    method int charToDigit(char c){
+        return c - 48;
+    }
+
     /** Sets this string to hold a representation of the given value. */
     method void setInt(int val) {
         // Pseudocode:
@@ -124,11 +134,10 @@
         // 5. else
         // 6.   return int2String(val / 10).appendChar(c)
         
-        // todo: fix and test with negative numbers
         let len = 0; // erase the current string
         //
         if(val < 0){
-            do appendChar(45); // append the negative sign
+            do appendChar(45); // append the neg sign
             let val = -val;
         }
         //
@@ -137,6 +146,13 @@
     }
 
     method void recursivePart(int val){
+        // Pseudocode:
+        // 1. let lastDigit = val % 10
+        // 2. let c = character representing lastDigit
+        // 3. if (val < 10)
+        // 4.   return c (as a string)
+        // 5. else
+        // 6.   return int2String(val / 10).appendChar(c)
         var int lastDigit, remainder;
         var char c;
 
@@ -147,8 +163,8 @@
         }
         else{
             let remainder = val / 10;
-            do setInt(remainder);
-            let lastDigit = val - (remainder*10);
+            do recursivePart(remainder);
+            let lastDigit = val - (remainder * 10);
             let c = digitToChar(lastDigit);
             do appendChar(c);
         }
